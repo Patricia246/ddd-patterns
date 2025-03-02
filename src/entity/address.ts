@@ -5,7 +5,7 @@ export default class Address {
     _state: string;
     _zipCode: string;
 
-    constructor(id: string, street: string, number: number, city: string, state: string, country: string, zipCode: string) {
+    constructor(street: string, number: number, city: string, state: string, country: string, zipCode: string) {
         this._street = street;
         this._number = number;
         this._city = city;
