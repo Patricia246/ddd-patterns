@@ -1,7 +1,9 @@
+import Address from "./address";
+
 class Customer {
     _id: string;
     _name: string;
-    _address: string = "";
+    _address!: Address;
     _ative: boolean = true;
 
     constructor(id: string, name: string) {
@@ -24,7 +26,7 @@ class Customer {
     }    
 
     activate() {
-        if (this._address === "") {
+        if (this._address === undefined) {
             throw new Error("Address is required");
         }
         this._ative = true;
@@ -34,4 +36,7 @@ class Customer {
         this._ative = false;
     }
 
+    setAddress(address: Address) {
+        this._address = address;
+    }
 }
