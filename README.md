@@ -1,2 +1,1 @@
 # ddd-patterns
-# ddd-patterns
