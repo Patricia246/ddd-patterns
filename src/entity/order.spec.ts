@@ -31,4 +31,15 @@ describe("Order unit tests", () => {
         expect(() => new OrderItem("i1", "prod1", 100, "p1", 0)).toThrowError("Quantity must be greater than 0");
     }); 
 
+    it("should check if the item quantity is positive a number", () => {
+        expect(() => new OrderItem("i1", "prod1", 100, "p1", -1)).toThrowError("Quantity must be greater than 0");
+    }); 
+
+    it("should check if the item price is greater or equal than 0", () => {
+        expect(() => new OrderItem("i1", "prod1", 0, "p1", 1)).toThrowError("Price is required");
+    }); 
+
+    it("should check if the item price is a positive number", () => {
+        expect(() => new OrderItem("i1", "prod1", -2, "p1", 1)).toThrowError("Price is required");
+    }); 
 });

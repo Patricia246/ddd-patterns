@@ -26,7 +26,7 @@ export default class OrderItem {
         if (this._id === "") {
             throw new Error("Id is required");
         }
-        if (this._price === 0) {
+        if (this._price <= 0) {
             throw new Error("Price is required");
         }
         if (this._quantity <= 0) {
