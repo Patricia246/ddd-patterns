@@ -16,6 +16,10 @@ export default class Customer {
         return this._name;
     }
 
+    get id() {
+        return this._id;
+    }
+
     isActive() {
         return this._ative;
     }

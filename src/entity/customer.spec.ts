@@ -65,5 +65,4 @@ describe("Customer unit tests", () => {
         ).toThrowError("Address is required");
     }
     );
-
 });
