@@ -28,6 +28,10 @@ export default class Product {
         return this._price;
     }
 
+    get id(): string {
+        return this._id;
+    }
+
     validate(): boolean {
         if (!this._id) {
             throw new Error("Invalid id");
