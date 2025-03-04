@@ -19,6 +19,22 @@ export default class OrderItem {
         return this._price * this._quantity;
     }
 
+    get id(): string {
+        return this._id;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get quantity(): number {
+        return this._quantity;
+    }
+
+    get productId(): string {
+        return this._productId;
+    }
+
     validate() {
         if (this._name === "") {
             throw new Error("Name is required");
