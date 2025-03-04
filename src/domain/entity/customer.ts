@@ -54,11 +54,15 @@ export default class Customer {
         this._ative = false;
     }
 
-    Address(address: Address) {
-        this._address = address;
-    }
+    get Address(): Address {
+        return this._address;
+    }    
 
     addRewardPoints(points: number) {
         this._rewardPoints += points;
+    }
+
+    changeAddress(address: Address) {
+        this._address = address;
     }
 }
