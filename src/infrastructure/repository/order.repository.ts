@@ -58,33 +58,52 @@ export default class OrderRepository implements OrderRepositoryInterface{
     }
 
     async find(id: string): Promise<Order> {
-      let orderModel;
-      try {
-        orderModel = await OrderModel.findOne({
-          where: {
-            id,
-          },
-          rejectOnEmpty: true, 
-          include: ["items"],
-        });
-      } catch (error) {
+      const orderModel = await OrderModel.findByPk(id, {
+        include: [OrderItemModel],
+      });
+  
+      if (!orderModel) {
         throw new Error("Order not found");
       }
-          
-      const itemss: OrderItem[] = []
-      orderModel.items.forEach((item: OrderItemModel) => {
-        //order.addItems([new OrderItem(item.id, item.name, item.price, item.product_id, item.quantity)])
-        const oi = new OrderItem(item.id, item.name, item.price, item.product_id, item.quantity)
-        itemss.push(oi)
-      });
-      const order = new Order(id, orderModel.customer_id, itemss);
-      
-      
-    
+  
+      const orderItems = orderModel.items.map((item) => new OrderItem(
+        item.id,
+        item.name,
+        item.price,
+        item.product_id,
+        item.quantity
+      ));
+  
+      const order = new Order(
+        orderModel.id,
+        orderModel.customer_id,
+        orderItems
+      );
+  
       return order;
     }
 
     async findAll(): Promise<Order[]> {
-      throw console.error("error");
+      const orderModel = await OrderModel.findAll({
+        include: [OrderItemModel]
+      });
+      
+      return orderModel.map((orderModel) => {
+        const orderItems = orderModel.items.map((item) => new OrderItem(
+          item.id,
+          item.name,
+          item.price,
+          item.product_id,
+          item.quantity
+        ));
+
+        const order = new Order(
+          orderModel.id,
+          orderModel.customer_id,
+          orderItems
+        );
+    
+        return order;
+      });
     }
   }

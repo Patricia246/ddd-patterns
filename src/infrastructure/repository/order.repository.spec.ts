@@ -296,20 +296,87 @@ describe("Order repository test", () => {
     
     const orderFound = await orderRepository.find("123");    
     
-    expect(orderModel.toJSON()).toStrictEqual({
-      id: orderFound.id,
-      customer_id: orderFound,
-      total: orderFound.total(),
-      items: [
-        {
-          id: orderFound.items[0].id,
-          name: orderFound.items[0].name,
-          price: orderFound.items[0].price,
-          quantity: orderFound.items[0].quantity,
-          order_id: "123",
-          product_id: "123",
-        },
-      ],
-    });
+    expect(orderModel.toJSON().total).toBe(orderFound.total()) 
+    expect(orderModel.toJSON().items.length).toBe(1);
+    expect(orderModel.toJSON().id).toBe(orderFound.id) 
+    expect(orderModel.toJSON().customer_id).toBe(orderFound.customerId) 
+    expect(orderModel.toJSON().total).toBe(orderFound.total()) 
+    expect(orderModel.items[0].id).toBe(orderFound.items[0].id);
+    expect(orderModel.items[0].product_id).toBe(orderFound.items[0].productId);
+    expect(orderModel.items[0].quantity).toBe(orderFound.items[0].quantity);
+    expect(orderModel.items[0].price).toBe(orderFound.items[0].price);
+    expect(orderModel.items[0].order_id).toBe(orderFound.id);
+  });
+
+  it("should throw error when not found a error", async() => {
+    const orderRepository = new OrderRepository();
+    await expect(orderRepository.find("567")).rejects.toThrow("Order not found");
+  });
+
+  it("should find all order", async() => {
+    const customerRepository = new CustomerRepository();
+    const customer1 = new Customer("123", "Customer 1");
+    const address = new Address("Rua A", 123, "Cidade A", "SP", "12345678");
+    customer1.changeAddress(address);
+    await customerRepository.create(customer1);
+    const customer2 = new Customer("12", "Customer 2");
+    customer2.changeAddress(address)
+    await customerRepository.create(customer2);
+    const productRepository = new ProductRepository();
+    const product = new Product("123", "Product 1", 10);
+    await productRepository.create(product);
+    const orderItem1 = new OrderItem(
+      "1",
+      product.name,
+      product.price,
+      product.id,
+      2
+    );
+    const orderItem2 = new OrderItem(
+      "2",
+      product.name,
+      product.price,
+      product.id,
+      1
+    );
+    const orderItem3 = new OrderItem(
+      "3",
+      product.name,
+      product.price,
+      product.id,
+      1
+    );
+    const order1 = new Order("123", "123", [orderItem1, orderItem2]);
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(order1);
+    const order2 = new Order("124", "12", [orderItem3]);
+    await orderRepository.create(order2);
+
+    const orders = await orderRepository.findAll()
+
+    expect(orders.length).toBe(2);
+    expect(orders[0].id).toBe(order1.id);
+    expect(orders[0].customerId).toBe(order1.customerId);
+    expect(orders[0].total()).toBe(order1.total());
+    expect(orders[0].items.length).toBe(order1.items.length);
+    expect(orders[0].items[0].id).toBe(orderItem1.id);
+    expect(orders[0].items[0].name).toBe(orderItem1.name);
+    expect(orders[0].items[0].price).toBe(orderItem1.price);
+    expect(orders[0].items[0].productId).toBe(orderItem1.productId);
+    expect(orders[0].items[0].quantity).toBe(orderItem1.quantity);
+    expect(orders[0].items[1].id).toBe(orderItem2.id);
+    expect(orders[0].items[1].name).toBe(orderItem2.name);
+    expect(orders[0].items[1].price).toBe(orderItem2.price);
+    expect(orders[0].items[1].productId).toBe(orderItem2.productId);
+    expect(orders[0].items[1].quantity).toBe(orderItem2.quantity);
+    expect(orders[1].id).toBe(order2.id);
+    expect(orders[1].customerId).toBe(order2.customerId);
+    expect(orders[1].total()).toBe(order2.total());
+    expect(orders[1].items.length).toBe(order2.items.length);
+    expect(orders[1].items[0].id).toBe(orderItem3.id);
+    expect(orders[1].items[0].name).toBe(orderItem3.name);
+    expect(orders[1].items[0].price).toBe(orderItem3.price);
+    expect(orders[1].items[0].productId).toBe(orderItem3.productId);
+    expect(orders[1].items[0].quantity).toBe(orderItem3.quantity);
   });
 });
