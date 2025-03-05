@@ -38,6 +38,28 @@ export default class Order {
         return true;
     }
 
+    addItems(items: OrderItem[]): void {
+        this._items.push(...items);         
+    }
+
+    removeItem(item: OrderItem): void {
+        if(this._items.length <= 1) {
+            throw new Error("Items are required");
+        }
+        const index = this._items.findIndex(i => i.id === item.id);
+        if(index === -1) {
+            throw new Error("Item not found");
+        }
+        if (index !== -1) {
+            this._items.splice(index, 1);
+        }     
+    }
+
+    changeCustomer(customerId: string){
+        this._customerId = customerId;
+        this.validate();
+    }
+
     total(): number {
         return this._items.reduce((acc, item) => acc + item.price, 0);
     }
