@@ -5,6 +5,5 @@ export default class SendEmailWhenProductIsCreatedHandler implements EventHandle
 
     handle(event: ProductCreatedEvent): void {
         console.log(`Sending email to .....`);
-        
     }
 }
