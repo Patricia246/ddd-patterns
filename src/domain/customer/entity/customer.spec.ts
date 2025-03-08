@@ -1,8 +1,8 @@
-import Address from "./address";
+import Address from "../value-object/address";
 import Customer from "./customer";
-import EventDispatcher from "../event/@shared/event-dispatcher";
-import SendConsoleLogHandlerWhenCustomerIsCreatedHandler from "../event/customer/handler/send-console-log-handler-when-customer-is-created.handler";
-import SendConsoleLog2HandlerWhenCustomerIsCreatedHandler from "../event/customer/handler/send-console-log2-handler-when-customer-is-created.handler";
+import EventDispatcher from "../../@shared/event/event-dispatcher";
+import SendConsoleLogHandlerWhenCustomerIsCreatedHandler from "../event/handler/send-console-log-handler-when-customer-is-created.handler";
+import SendConsoleLog2HandlerWhenCustomerIsCreatedHandler from "../event/handler/send-console-log2-handler-when-customer-is-created.handler";
 describe("Customer unit tests", () => {
 
     it("Should throw error when id is empty", () => {
